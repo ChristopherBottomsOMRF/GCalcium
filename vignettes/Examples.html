@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<meta name="author" content="Andrew Tamalunas" />
+
+<meta name="date" content="2019-02-14" />
+
+<title>Working with Waveform Data using GCalcium</title>
+
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+
+
+<link href="data:text/css;charset=utf-8,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23header%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%20code%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" rel="stylesheet" type="text/css" />
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Working with Waveform Data using GCalcium</h1>
+<h4 class="author"><em>Andrew Tamalunas</em></h4>
+<h4 class="date"><em>2019-02-14</em></h4>
+
+
+
+<p>Calcium indicator methods such as GCaMP produce massive amounts of data; in some cases producing hundreds-of-thousands of data points for a single subject. Further, there is currently no ubiquitous way to organize or analyze this type of data. To even analyze the data, the researcher must:</p>
+<ul>
+<li><p>Organize the data into a format that is easy to manipulate</p></li>
+<li><p>Extract useful data points for visualization and analysis</p></li>
+<li><p>Visualize the data</p></li>
+</ul>
+<p>The GCalcium package gets researchers to the analysis phase more quickly by:</p>
+<ul>
+<li><p>Providing simple, quick commands to format data for use both with, and without the GCalcium package</p></li>
+<li><p>Extracting data points and waveform characteristics for summarizing and comparing activity within and between trials</p></li>
+<li><p>Shortcuts for useful visualizations</p></li>
+</ul>
+<p>This document explains how to use GCalcium’s functions to format, extract, and manipulate calcium indicator data.</p>
+<div id="data-gcamp" class="section level1">
+<h1>Data: GCaMP</h1>
+<p>The data included with the GCalcium provides a sample of a time series-like dataset exported from Matlab using the <a href="https://www.tdt.com/support/sdk.html">TDTFilter command</a> with a modified version of <a href="https://www.tdt.com/support/EXEpocAveragingExampleDR.html">Dr. David Root’s Matlab script</a>. This data was collected using GCaMP6.</p>
+<p>This dataset consists of 11 rows and 814 columns. 10 trials from a pilot study were used, with calcium activity from 4 seconds before and after stimulus onset (0s).</p>
+</div>
+<div id="data-formatting" class="section level1">
+<h1>Data formatting</h1>
+<p>In order to use the rest of the package, data must be in a data frame format, with the requirements being:</p>
+<ol style="list-style-type: decimal">
+<li><p>The first column is a measure of time</p></li>
+<li><p>The following columns are recorded values from trials in ascending order that correspond to the times the values were recorded at, with 1 column per trial</p></li>
+</ol>
+<p>Fortunately, the GCalcium package includes functions that quickly reformat the data for ease with both user manipulation and use of this package. All formatting commands output this type of data frame.</p>
+<div id="format-organized-data-with-format_data" class="section level3">
+<h3>Format organized data with format_data</h3>
+<p>Currently, the only command for formatting data is <code>format_data</code>, which takes a matrix of a time measurement in the first column or row, and one trial per column or row in the subsequent columns/rows. A data frame with the first row “Time” and subsequent rows “Trial#” is outputted.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">GCaMP.form &lt;-<span class="st"> </span><span class="kw">format_data</span>(GCaMP)
+
+### Old table
+GCaMP[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">5</span>]
+<span class="co">#&gt;         [,1]    [,2]    [,3]    [,4]    [,5]</span>
+<span class="co">#&gt; [1,] -3.9902 -3.9803 -3.9705 -3.9607 -3.9508</span>
+<span class="co">#&gt; [2,] 82.6890 82.6560 82.6500 82.6710 82.7120</span>
+<span class="co">#&gt; [3,] 82.8580 82.9220 82.9840 83.0420 83.0850</span>
+<span class="co">#&gt; [4,] 81.7090 81.7020 81.7130 81.7260 81.7320</span>
+<span class="co">#&gt; [5,] 89.7470 89.6370 89.5450 89.4760 89.4280</span>
+
+### New table
+GCaMP.form[<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">5</span>]
+<span class="co">#&gt;      Time Trial1 Trial2 Trial3 Trial4</span>
+<span class="co">#&gt; 1 -3.9902 82.689 82.858 81.709 89.747</span>
+<span class="co">#&gt; 2 -3.9803 82.656 82.922 81.702 89.637</span>
+<span class="co">#&gt; 3 -3.9705 82.650 82.984 81.713 89.545</span>
+<span class="co">#&gt; 4 -3.9607 82.671 83.042 81.726 89.476</span>
+<span class="co">#&gt; 5 -3.9508 82.712 83.085 81.732 89.428</span></code></pre></div>
+<p>Note: the data frame used with the GCalcium package does not have to be labeled the same as the format_data frame. This is simply for ease of calling each trial using outside functions.</p>
+</div>
+</div>
+<div id="extracting-useful-information-for-analysis" class="section level1">
+<h1>Extracting useful information for analysis</h1>
+<p>To perform analyses or explore differences in activity waveforms, one must filter and summarize the data. Knowing what wave characteristics to compare can be confusing; as many scientists do not typically work with this type of data. The following commands extract and/or summarize numbers comparisons that have been used in past research. These functions are split into 2 types: vector inputs, and matrix (<code>format_data</code> style) inputs.</p>
+<div id="vector" class="section level2">
+<h2>Vector</h2>
+<ul>
+<li><p><code>find_peaks</code> looks for peaks based on inflection points and a simple filter</p></li>
+<li><p><code>inflect_points</code> finds the peaks and valleys of waves</p></li>
+</ul>
+<div id="find_peaks" class="section level3">
+<h3>find_peaks</h3>
+<p><code>find_peaks</code> finds peaks or valleys in waveforms by using inflection points, with filter of ‘n’ increasing/decreasing points on both sides of each inflection point. A positive numerical input for ‘n.points’ returns the indices of peaks for the input vector, while a negative value returns indices of valleys.</p>
+<p>Let’s say we wanted to find all peaks of trial 1 that have 10 consecutive decreasing points on the left and right of each peak, and use these indices to subset the data.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">peak.indices &lt;-<span class="st"> </span><span class="kw">find_peaks</span>(GCaMP.form<span class="op">$</span>Trial1, <span class="dt">n.points =</span> <span class="dv">10</span>)
+
+## Subset using indexing
+peaks.df &lt;-<span class="st"> </span><span class="kw">data.frame</span>(
+  <span class="dt">times =</span> GCaMP.form<span class="op">$</span>Time[peak.indices],
+  <span class="dt">vals =</span> GCaMP.form<span class="op">$</span>Trial1[peak.indices]
+)
+
+<span class="kw">head</span>(peaks.df, <span class="dv">4</span>)
+<span class="co">#&gt;     times   vals</span>
+<span class="co">#&gt; 1 -3.9214 82.794</span>
+<span class="co">#&gt; 2 -3.7346 82.752</span>
+<span class="co">#&gt; 3 -3.5675 82.700</span>
+<span class="co">#&gt; 4 -3.2332 82.896</span></code></pre></div>
+</div>
+<div id="inflect_points" class="section level3">
+<h3>inflect_points</h3>
+<p><code>inflect_points</code> uses derivatives to find and label the inflection points (peaks and valleys) of a vector, along with the points between them.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">inf.pts &lt;-<span class="st"> </span><span class="kw">inflect_points</span>(GCaMP.form<span class="op">$</span>Trial1)
+
+<span class="kw">print</span>(inf.pts[<span class="dv">1</span><span class="op">:</span><span class="dv">46</span>])
+<span class="co">#&gt;  [1]  0  2  0  0  0  0 -2  0  0  0  0  0  0  2  0  0  0  0  0  0  0  0  0</span>
+<span class="co">#&gt; [24]  0  0 -2  0  0  0  0  0  0  0  0  2  0  0  0  0  0  0  0 -2  0  0  0</span></code></pre></div>
+<p>The value -2 indicates a peak, 2 indicates a valley, and 0 indicates a point on the curve between -2 and 2, or vice versa.</p>
+</div>
+</div>
+<div id="matrix-or-data-frame" class="section level2">
+<h2>Matrix or Data frame</h2>
+<ul>
+<li><p><code>averaged_trials</code> Averages values across trials</p></li>
+<li><p><code>avg_curve_slope</code> gets the average slope of a curve (half wave)</p></li>
+<li><p><code>between_trial_change</code> finds the difference in mean activity between trials</p></li>
+<li><p><code>centered_AUC</code> finds the area under each curve</p></li>
+<li><p><code>consecutive_trial_change</code> finds the difference in mean activity between trial n and n+1</p></li>
+<li><p><code>moving_window</code> summarizes data within windows of time</p></li>
+<li><p><code>inflect_points_df</code> finds provides a summary of the data between each inflection point (half wave)</p></li>
+<li><p><code>perc_baseline</code> calculates the percent change from a user-specified baseline period</p></li>
+<li><p><code>within_trial_change</code> finds the difference in mean activity within a trial</p></li>
+</ul>
+<div id="averaged_trials" class="section level3">
+<h3>averaged_trials</h3>
+<p><code>averaged_trials</code> averages values over each time point, across the specified trials. This is especially useful when blocking groups of trials.</p>
+<p>Let’s say we want to plot the averaged values of trials 1-5</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">df.1thru5 &lt;-<span class="st"> </span><span class="kw">averaged_trials</span>(GCaMP.form, <span class="dv">1</span><span class="op">:</span><span class="dv">5</span>)
+
+<span class="kw">plot</span>(<span class="dt">x =</span> df.1thru5<span class="op">$</span>Time, df.1thru5<span class="op">$</span>Values, <span class="dt">type =</span> <span class="st">'l'</span>,
+     <span class="dt">xlab =</span> <span class="st">'Time (s)'</span>, <span class="dt">ylab =</span> <span class="st">'Values'</span>)</code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+</div>
+<div id="avg_curve_slope" class="section level3">
+<h3>avg_curve_slope</h3>
+<p><code>avg_curve_slope</code> takes advantage of the ‘lm’ function to get the average slope of a curve</p>
+<p>Let’s say we wanted to find the average curve slopes of the waves in trial 2:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">avg.slopes &lt;-<span class="st"> </span><span class="kw">avg_curve_slope</span>(<span class="dt">Dataframe =</span> GCaMP.form, <span class="dt">Trial =</span> <span class="dv">2</span>)
+<span class="kw">print</span>(avg.slopes[<span class="dv">1</span><span class="op">:</span><span class="dv">25</span>])
+<span class="co">#&gt;  [1]   4.7952454  -6.5501308   6.0529910          NA  -0.8673469</span>
+<span class="co">#&gt;  [6]   2.6255412  -2.2515783   1.5663381  -0.2961311   4.1880802</span>
+<span class="co">#&gt; [11]  -2.1473810   4.2200754  -7.1355861   1.2795264  -2.5091774</span>
+<span class="co">#&gt; [16]   4.7090888  -6.6075358   7.0368126  -2.4614273   6.9958416</span>
+<span class="co">#&gt; [21]  -4.5331100   3.2473198  -4.5933131  18.3817832 -13.3153301</span></code></pre></div>
+</div>
+<div id="between_trial_change" class="section level3">
+<h3>between_trial_change</h3>
+<p><code>between_trial_change</code> finds the difference in means during the same time range between sets of trials</p>
+<p>For example: we want to see how neural activity during the trial changes after manipulating the experimental variable. The control trials are 1-5, and the experimental trials are 6-10.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">between_trial_change</span>(<span class="dt">Dataframe =</span> GCaMP.form, <span class="dt">TrialRange1 =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">5</span>), <span class="dt">TrialRange2 =</span> <span class="kw">c</span>(<span class="dv">6</span>, <span class="dv">10</span>), <span class="dt">Time.period =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">4</span>))
+<span class="co">#&gt; [1] 38.56181</span></code></pre></div>
+</div>
+<div id="centered_auc" class="section level3">
+<h3>centered_AUC</h3>
+<p><code>centered_AUC</code> centers input values using a user-specified function such as the mean, then uses trapezoidal integration from the ‘pracma’ package to find the area under each curve.</p>
+<p>Let’s say we wanted a metric besides the mean to measure neural activity to compare trials 2 and 4.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">### Trial 2
+<span class="kw">centered_AUC</span>(<span class="dt">Dataframe =</span> GCaMP.form, <span class="dt">Trial =</span> <span class="dv">2</span>, <span class="dt">FUN =</span> mean)[<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>,]
+<span class="co">#&gt;    Curve.Num          AUC</span>
+<span class="co">#&gt; 1          1  0.006891704</span>
+<span class="co">#&gt; 2          2  0.004587406</span>
+<span class="co">#&gt; 3          3 -0.026744846</span>
+<span class="co">#&gt; 4          4           NA</span>
+<span class="co">#&gt; 5          5 -0.003146397</span>
+<span class="co">#&gt; 6          6 -0.009559396</span>
+<span class="co">#&gt; 7          7 -0.001872021</span>
+<span class="co">#&gt; 8          8 -0.004173221</span>
+<span class="co">#&gt; 9          9 -0.001198623</span>
+<span class="co">#&gt; 10        10  0.002160707</span>
+
+### Trial 4
+<span class="kw">centered_AUC</span>(<span class="dt">Dataframe =</span> GCaMP.form, <span class="dt">Trial =</span> <span class="dv">4</span>, <span class="dt">FUN =</span> mean)[<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>,]
+<span class="co">#&gt;    Curve.Num          AUC</span>
+<span class="co">#&gt; 1          1 -0.103412748</span>
+<span class="co">#&gt; 2          2 -0.158943291</span>
+<span class="co">#&gt; 3          3 -0.007522804</span>
+<span class="co">#&gt; 4          4 -0.005996655</span>
+<span class="co">#&gt; 5          5 -0.058516248</span>
+<span class="co">#&gt; 6          6 -0.052588348</span>
+<span class="co">#&gt; 7          7 -0.023744899</span>
+<span class="co">#&gt; 8          8 -0.036970504</span>
+<span class="co">#&gt; 9          9 -0.024854394</span>
+<span class="co">#&gt; 10        10  0.009037108</span></code></pre></div>
+</div>
+<div id="consecutive_trial_change" class="section level3">
+<h3>consecutive_trial_change</h3>
+<p><code>consecutive_trial_change</code> finds the difference in means between consecutive trials during the same time range.</p>
+<p>For example: we want to know how much the change in activity is along trials 1-10.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">consecutive_trial_change</span>(<span class="dt">Dataframe =</span> GCaMP.form, <span class="dt">Trials =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">10</span>), <span class="dt">Time.period =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">4</span>)) 
+<span class="co">#&gt;   Trial Mean.Change</span>
+<span class="co">#&gt; 1   1.5   0.4838684</span>
+<span class="co">#&gt; 2   2.5  -0.6399090</span>
+<span class="co">#&gt; 3   3.5   8.3537811</span>
+<span class="co">#&gt; 4   4.5  -1.1332103</span>
+<span class="co">#&gt; 5   5.5  45.0354846</span>
+<span class="co">#&gt; 6   6.5 -12.9349766</span>
+<span class="co">#&gt; 7   7.5  -2.7213407</span>
+<span class="co">#&gt; 8   8.5  -0.8451046</span>
+<span class="co">#&gt; 9   9.5  -3.5104551</span></code></pre></div>
+</div>
+<div id="inflect_points_df" class="section level3">
+<h3>inflect_points_df</h3>
+<p><code>inflect_points_df</code> uses <code>inflect_points</code> to find the inflection points, then summarizes the data and returns a data frame with the following variables: Time, raw (input) values, inflection points, and the number of the respective curve.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">inf.pts.df &lt;-<span class="st"> </span><span class="kw">inflect_points_df</span>(<span class="dt">Dataframe =</span> GCaMP.form, <span class="dt">Trial =</span> <span class="dv">1</span>)
+<span class="kw">head</span>(inf.pts.df, <span class="dv">6</span>)
+<span class="co">#&gt;      Time Raw.Values Curve.Num Inf.Pts</span>
+<span class="co">#&gt; 1 -3.9902     82.689         1       0</span>
+<span class="co">#&gt; 2 -3.9803     82.656         2       2</span>
+<span class="co">#&gt; 3 -3.9705     82.650         2       0</span>
+<span class="co">#&gt; 4 -3.9607     82.671         2       0</span>
+<span class="co">#&gt; 5 -3.9508     82.712         2       0</span>
+<span class="co">#&gt; 6 -3.9410     82.757         2       0</span></code></pre></div>
+<p>In differentiating between <code>inflect_points</code> and <code>inflect_points_df</code>, notice that the purpose of this function fully corresponds to its name. The output and first input are both data frames.</p>
+</div>
+<div id="moving_window" class="section level3">
+<h3>moving_window</h3>
+<p><code>moving_window</code> summarizes data within time windows of a specified length, across a single trial.</p>
+<p>Let’s say we want to find how the average fluorescence changes within trial 5 in 1 second intervals</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">moving_window</span>(<span class="dt">Dataframe =</span> GCaMP.form, <span class="dt">Trial =</span> <span class="dv">5</span>, <span class="dt">Window.length =</span> <span class="dv">1</span>, <span class="dt">FUN =</span> mean)
+<span class="co">#&gt;   Summary.vals Start.time Stop.time Window.num</span>
+<span class="co">#&gt; 1     90.29526    -3.9902   -2.9902          1</span>
+<span class="co">#&gt; 2     90.34658    -2.9902   -1.9902          2</span>
+<span class="co">#&gt; 3     90.77381    -1.9902   -0.9902          3</span>
+<span class="co">#&gt; 4     90.36636    -0.9902    0.0098          4</span>
+<span class="co">#&gt; 5     87.85451     0.0098    1.0098          5</span>
+<span class="co">#&gt; 6     88.40449     1.0098    2.0098          6</span>
+<span class="co">#&gt; 7     88.26752     2.0098    3.0098          7</span>
+<span class="co">#&gt; 8     89.60593     3.0098    4.0098          8</span></code></pre></div>
+</div>
+<div id="perc_baseline" class="section level3">
+<h3>perc_baseline</h3>
+<p><code>perc_baseline</code> calculates the percent change from a baseline period specified by the user for all trials in the input matrix or data frame. This outputs the same object, but with values transformed to percent change from baseline. This is a good way for standardizing data within trial periods; especially when the baseline period has low standard deviations that cause inflated values in transforming into z-scores.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">perc_baseline</span>(<span class="dt">Dataframe =</span> GCaMP.form, <span class="dt">Baseline.times =</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">3</span>, <span class="op">-</span><span class="dv">1</span>), <span class="dt">Baseline.frame =</span> <span class="ot">FALSE</span>)[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">4</span>]
+<span class="co">#&gt;      Time     Trial1      Trial2     Trial3</span>
+<span class="co">#&gt; 1 -3.9902 0.09668138 -0.06632278 0.06807828</span>
+<span class="co">#&gt; 2 -3.9803 0.05673422  0.01086658 0.05950546</span>
+<span class="co">#&gt; 3 -3.9705 0.04947110  0.08564376 0.07297703</span></code></pre></div>
+</div>
+<div id="within_trial_change" class="section level3">
+<h3>within_trial_change</h3>
+<p><code>within_trial_change</code> finds the change in mean values between the beginning and end of the entered time ranges for a single trial.</p>
+<p>For example: we want to know how the mean activity changes between the first two seconds before epoc (baseline) and during the trial.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">within_trial_change</span>(<span class="dt">Dataframe =</span> GCaMP.form, <span class="dt">Trial =</span> <span class="dv">1</span>, <span class="dt">Beg.period =</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">2</span>, <span class="dv">0</span>), <span class="dt">End.period =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">2</span>))
+<span class="co">#&gt; [1] -0.231172</span></code></pre></div>
+</div>
+</div>
+</div>
+<div id="transformations-and-filtering" class="section level1">
+<h1>Transformations and filtering</h1>
+<div id="z_score" class="section level3">
+<h3>z_score</h3>
+<p><code>z_score</code> transforms input values into z-scores. This also allows for a user-specified mean and standard deviation to compare distributions.</p>
+<p>Let’s say we wanted to see how the variability of baseline and trial compare by using a mean and standard deviation from a baseline period before epoc.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">### Extract values
+basevals &lt;-<span class="st"> </span>GCaMP.form<span class="op">$</span>Trial1[GCaMP.form<span class="op">$</span>Time <span class="op">&lt;=</span><span class="st"> </span><span class="dv">0</span>]
+eventvals &lt;-<span class="st"> </span>GCaMP.form<span class="op">$</span>Trial1[GCaMP.form<span class="op">$</span>Time <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>]
+
+### Find baseline (pre-epoc) values
+base.mu &lt;-<span class="st"> </span><span class="kw">mean</span>(basevals)
+base.sigma &lt;-<span class="st"> </span><span class="kw">sd</span>(basevals)
+
+### Compute centered z-scores
+z.scores &lt;-<span class="st"> </span><span class="kw">z_score</span>(<span class="dt">x =</span> eventvals, <span class="dt">mu =</span> base.mu, <span class="dt">sigma =</span> base.sigma)
+
+<span class="kw">print</span>(z.scores[<span class="dv">1</span><span class="op">:</span><span class="dv">30</span>])
+<span class="co">#&gt;  [1]  0.704283272  0.492798494  0.237857939  0.000299695 -0.176420462</span>
+<span class="co">#&gt;  [6] -0.292302532 -0.361831775 -0.422669862 -0.503787311 -0.645742847</span>
+<span class="co">#&gt; [11] -0.860124677 -1.117962283 -1.381593993 -1.610461082 -1.746622515</span>
+<span class="co">#&gt; [16] -1.781387136 -1.708960842 -1.532240685 -1.285991285 -1.033947782</span>
+<span class="co">#&gt; [21] -0.828257108 -0.715272089 -0.723963244 -0.839845315 -1.033947782</span>
+<span class="co">#&gt; [26] -1.265711923 -1.465608494 -1.581490565 -1.590181720 -1.506167219</span></code></pre></div>
+<p>Note that the return format is different from the base R ‘scale’ function, in that it does not create new attributes.</p>
+</div>
+</div>
+<div id="plotting" class="section level1">
+<h1>Plotting</h1>
+<div id="plot_trials" class="section level3">
+<h3>plot_trials</h3>
+<p><code>plot_trials</code> uses the base R graphics to create a quick plot of the trial waves.</p>
+<p>For example: we want to visualize the first 2 and last 2 trials</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my.trials &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">9</span>, <span class="dv">10</span>)
+<span class="kw">plot_trials</span>(<span class="dt">Dataframe =</span> GCaMP.form, <span class="dt">Trials =</span> my.trials)</code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<p>Note: this function automatically adjusts the x- and y- axes to fit all values. It also creates a legend for the corresponding trials.</p>
+</div>
+</div>
+
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

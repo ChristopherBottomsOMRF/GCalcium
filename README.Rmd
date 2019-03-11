@@ -1,0 +1,52 @@
+---
+output:
+  md_document:
+    variant: markdown_github
+---
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "README-"
+)
+```
+
+# GCalcium
+
+Calcium imaging methods produce massive datasets that require immense data manipulation, exploration, and summarizing. GCalcium provides highly-accessible functions to address these issues for both inexperienced and seasoned R users to save researchers time. This package is catered to calcium imaging data, but works with any type of waveform data. A few functions include:
+
+* `format_data` converts a data frame or matrix to a GCalcium-friendly format
+* `avg_curve_slope` gets the average slope of curves for a trial
+* `between_trial_change` finds the difference in mean activity between trials
+* `centered_AUC` finds the area under each curve 
+* `moving_window` summarizes data within windows of time
+
+The "Examples" vignette explains all functions in greater detail.
+
+## Installation
+```{r, eval = FALSE}
+### Install from CRAN repository
+install.packages("GCalcium")
+```
+
+## Getting started
+
+Since there is currently no ubiquitous way to analyze or format calcium imaging data, most of GCalcium's commands require the data frame to be in "GCalcium format." This is essentially a time series data frame; where the times of recorded signals are in the first row or column, and the observed values of each trial are in the following rows or columns.
+```{r, message = FALSE}
+### Format data
+df.new <- format_data(GCaMP)
+
+### What is the average slope for each curve in trial 1?
+cat( avg_curve_slope(Dataframe = df.new, Trial = 1) )
+
+### How does activity of each curve differ from the average in trial 1?
+head( centered_AUC(Dataframe = df.new, Trial = 1, FUN = mean) )
+
+### What is the average activity for trial 1 in 0.5 second intervals?
+head ( moving_window(Dataframe = df.new, Trial = 1, Window.length = 0.5, FUN = mean) )
+
+### How much does activity differ in the first second of trials 1 & 2, and 3 & 4?
+head( between_trial_change(Dataframe = df.new, TrialRange1 = 1:2, TrialRange2 = 3:4, 
+                           Time.period = c(0, 1)) )
+```
