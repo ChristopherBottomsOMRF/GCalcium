@@ -6,17 +6,20 @@
 #' @param Trials a single trial number or vector of trial numbers to center
 #' @param Baseline.times range of time from Baseline.frame to compute the baseline value from
 #' @param Baseline.frame a GCalcium-format data frame or matrix containing the baseline period. If frame is not specified, Dataframe is automatically used
-#' @param FUN function to use for centering data
+#' @param Method the type of centering to be used
 #' @return a GCalcium-format data frame with centered values
 #' @examples
 #' ### Format data frame
 #' df.new <- format_data(GCaMP)
 #'
 #' ### Transform into percent baseline: relative to -3s to -1s before epoc
-#' perc_baseline(Dataframe = df.new, Baseline.times = c(-3, -1))
+#' center_trials(Dataframe = df.new, Trials = c(1, 2, 3), Baseline.times = c(-3, -1), Method = 'perc_baseline')
 #' @export
 
-center_trials <- function(Dataframe, Trials, Baseline.times, Baseline.frame = FALSE, FUN = mean) {
+center_trials <- function(Dataframe, Trials, Baseline.times, Baseline.frame = FALSE, Method = 'perc_baseline') {
+
+  trial.inds <- c(Trials + 1)
+  trial.df <- Dataframe[trial.inds]
 
   ### Use Dataframe if Baseline.frame is not specified
   if(Baseline.frame == FALSE){
@@ -27,28 +30,32 @@ center_trials <- function(Dataframe, Trials, Baseline.times, Baseline.frame = FA
   baseline.start <- Baseline.times[1]
   baseline.stop <- Baseline.times[2]
 
-  ### Get baseline mean and sd for each trial
-  onset.df <- Baseline.frame[which(Baseline.frame[,1] >= baseline.start &
-                                     Baseline.frame[,1] <= baseline.stop), 2:ncol(Baseline.frame)]
+  ### Isolate baseline df for computation
+  baseline.df <- Baseline.frame[Baseline.frame[,1] >= baseline.start &
+                               Baseline.frame[,1] <= baseline.stop,
+                               trial.inds]
 
-  baseline.means <- apply(onset.df, 2, mean)
+  ##### Methods ---------------
 
-  ###
-  frame.list <- sapply(1:(length(baseline.means)), function(trialnum, Dataframe, baseline.means){
+  ### Percent baseline
+  if(Method == 'perc_baseline'){
 
-    trialind <- trialnum + 1
+    base.means <- apply(baseline.df, 2, mean)
 
-    base.mean <- baseline.means[[trialnum]]
+    values.c <- mapply(perc_baseline, trial.df, base.means)
 
-    mean.difs <- ( (Dataframe[trialind] - base.mean) / base.mean ) * 100
+  } else if(Method == 'z_score') {
 
-  },
-  Dataframe = Dataframe,
-  baseline.means = baseline.means)
+    base.means <- apply(baseline.df, 2, mean)
+    base.sdeez <- apply(baseline.df, 2, sd)
 
-  df <- do.call(cbind, frame.list)
-  df <- cbind(Time = Dataframe[1], df)
+    values.c <- mapply(z_score, trial.df, base.means, base.sdeez)
 
-  return(df)
+  } else {
+    print('Please enter valid centering method.')
+    break
+  }
+
+  return(values.c)
 
 }

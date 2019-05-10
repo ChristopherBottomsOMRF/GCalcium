@@ -7,8 +7,8 @@ output: html_document
 
 # GCalcium 1.0.1
 
-* added `center_trials` command for centering GCalcium-format data
-* `perc_baseline` has been deprecated and modified for use in `center_trials`
+* added `center_trials` command for centering in both vector- and GCalcium- format data
+* `perc_baseline` has been vectorized; data frame form can still be used in `center_trials`
 
 
 # GCalcium 1.0.0
