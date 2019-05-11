@@ -4,25 +4,31 @@
 \alias{perc_baseline}
 \title{Find the percent change from baseline}
 \usage{
-perc_baseline(Dataframe, Baseline.times, Baseline.frame = FALSE)
+perc_baseline(xvals, base.val)
 }
 \arguments{
-\item{Dataframe}{a GCalcium-format data frame or matrix}
+\item{xvals}{vector of numbers}
 
-\item{Baseline.times}{range of time from Baseline.frame to compute the baseline value from}
-
-\item{Baseline.frame}{a GCalcium-format data frame or matrix containing the baseline period. If frame is not specified, Dataframe is automatically used}
+\item{base.val}{the baseline value to be centered by}
 }
 \value{
-a GCalcium-format data frame with values transformed to percent baseline
+a vector with values transformed to percent baseline
 }
 \description{
-`perc_baseline` calculates the percent change from a user-specified baseline period
+`perc_baseline` calculates the percent change from a user-specified baseline
 }
 \examples{
 ### Format data frame
+# Format data
 df.new <- format_data(GCaMP)
 
-### Transform into percent baseline: relative to -3s to -1s before epoc
-perc_baseline(Dataframe = df.new, Baseline.times = c(-3, -1))
+# Split data
+basevals <- df.new$Trial1[df.new$Time <= 0]
+eventvals <- df.new$Trial1[df.new$Time > 0]
+
+# Find baseline (pre-epoc) values
+base.mean <- mean(basevals)
+
+# Compute values
+perc_baseline(x = eventvals, base.val = base.mean)
 }

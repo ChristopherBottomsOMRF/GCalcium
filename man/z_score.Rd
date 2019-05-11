@@ -4,7 +4,7 @@
 \alias{z_score}
 \title{Transform values into z scores}
 \usage{
-z_score(xvals, mu = FALSE, sigma = FALSE)
+z_score(xvals, mu = NULL, sigma = NULL)
 }
 \arguments{
 \item{xvals}{vector of numbers}
@@ -32,5 +32,5 @@ base.mu <- mean(basevals)
 base.sigma <- sd(basevals)
 
 # Compute values
-z_score(x = eventvals, mu = base.mu, sigma = base.sigma)
+z_score(xvals = eventvals, mu = base.mu, sigma = base.sigma)
 }

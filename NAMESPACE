@@ -3,6 +3,7 @@
 export(averaged_trials)
 export(avg_curve_slope)
 export(between_trial_change)
+export(center_trials)
 export(centered_AUC)
 export(consecutive_trial_change)
 export(find_peaks)
