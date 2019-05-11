@@ -17,8 +17,8 @@
 #' center_trials(Dataframe = df.new, Trials = c(1, 2, 3), Baseline.times = c(-3, -1), Method = 'perc.baseline')
 #' @export
 
-center_trials <- function(Dataframe, Trials, Baseline.times, Baseline.frame = NULL, Method = 'perc.baseline',
-                          Summary.type = 'mean') {
+center_trials <- function(Dataframe, Trials, Baseline.times, Baseline.frame = NULL,
+                          Method = 'perc.baseline', Summary.type = 'mean') {
 
   ### Use dataframe period as baseline frame if unspecified/null
   if(is.null(Baseline.frame)){
