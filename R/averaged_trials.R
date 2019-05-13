@@ -19,7 +19,7 @@ averaged_trials <- function(Dataframe, Trials){
 
   trialinds <- Trials + 1
 
-  TrialMeans <- colMeans(Dataframe[trialinds])
+  TrialMeans <- rowMeans(Dataframe[trialinds])
   return.df <- as.data.frame(cbind(Dataframe[,1], TrialMeans))
 
   colnames(return.df) <- c("Time", "Values")
