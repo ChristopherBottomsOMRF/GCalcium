@@ -1,4 +1,4 @@
-#' Pre-filtered GCaMP calcium activity waveforms
+#' Fitted GCaMP fluorescence waveform data
 #'
 #' A dataset containing calcium activity and
 #' observed times during a behavioral paradigm pilot study;

@@ -23,7 +23,7 @@
 #' z_score(xvals = eventvals, mu = base.mu, sigma = base.sigma)
 #' @export
 
-z_score <- function(xvals, mu = NULL, sigma = NULL){
+z_score <- function(xvals, mu = NULL, sigma = NULL, type = 'std'){
 
   ### mean
   if(is.null(mu)){
@@ -35,7 +35,6 @@ z_score <- function(xvals, mu = NULL, sigma = NULL){
     sigma <- sd(xvals)
   }
 
-  ### fin
   z.score <- (xvals - mu) / sigma
   return(z.score)
 
