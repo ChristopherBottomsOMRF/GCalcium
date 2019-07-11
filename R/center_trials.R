@@ -58,7 +58,7 @@ center_trials <- function(Dataframe, Trials, Baseline.times, Baseline.frame = NU
          },
 
          z.score = function(df = trial.df, m = summ.vals, s = sdeez){
-           mapply(z_score, df, m, s)
+           mapply(z_score, df, m, s, metric.type = Summary.type)
          }
 
   )
