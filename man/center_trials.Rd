@@ -31,5 +31,5 @@ a GCalcium-format data frame with centered values
 df.new <- format_data(GCaMP)
 
 ### Transform into percent baseline: relative to -3s to -1s before epoc
-center_trials(Dataframe = df.new, Trials = c(1, 2, 3), Baseline.times = c(-3, -1), Method = 'perc.baseline')
+center_trials(Dataframe = df.new, Trials = c(1, 2, 3), Baseline.times = c(-3, -1))
 }

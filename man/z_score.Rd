@@ -4,7 +4,8 @@
 \alias{z_score}
 \title{Transform values into z scores}
 \usage{
-z_score(xvals, mu = NULL, sigma = NULL)
+z_score(xvals, mu = NULL, sigma = NULL, summary.type = "mean",
+  mad.const = 1.4826)
 }
 \arguments{
 \item{xvals}{vector of numbers}
@@ -12,6 +13,12 @@ z_score(xvals, mu = NULL, sigma = NULL)
 \item{mu}{the population mean}
 
 \item{sigma}{the population standard deviation}
+
+\item{summary.type}{the summary statistic to use
+* "mean" computes standard z scores
+* "median" computes modified z-scores}
+
+\item{mad.const}{if median is used, the constant used in computing MAD}
 }
 \value{
 a numeric vector of z scores

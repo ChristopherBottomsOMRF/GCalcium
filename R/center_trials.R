@@ -14,7 +14,7 @@
 #' df.new <- format_data(GCaMP)
 #'
 #' ### Transform into percent baseline: relative to -3s to -1s before epoc
-#' center_trials(Dataframe = df.new, Trials = c(1, 2, 3), Baseline.times = c(-3, -1), Method = 'perc.baseline')
+#' center_trials(Dataframe = df.new, Trials = c(1, 2, 3), Baseline.times = c(-3, -1))
 #' @export
 
 center_trials <- function(Dataframe, Trials, Baseline.times, Baseline.frame = NULL,
@@ -58,7 +58,7 @@ center_trials <- function(Dataframe, Trials, Baseline.times, Baseline.frame = NU
          },
 
          z.score = function(df = trial.df, m = summ.vals, s = sdeez){
-           mapply(z_score, df, m, s, metric.type = Summary.type)
+           mapply(z_score, df, m, s, summary.type = Summary.type)
          }
 
   )

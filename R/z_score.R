@@ -2,10 +2,14 @@
 #'
 #' @description `z_score` transforms input values to z scores. Allows user input of mu and sigma values for comparing distributions.
 #'
-#' @importFrom stats sd mad
+#' @importFrom stats sd mad median
 #' @param xvals vector of numbers
 #' @param mu the population mean
 #' @param sigma the population standard deviation
+#' @param summary.type the summary statistic to use
+#' * "mean" computes standard z scores
+#' * "median" computes modified z-scores
+#' @param mad.const if median is used, the constant used in computing MAD
 #' @return a numeric vector of z scores
 #' @examples
 #' # Format data
@@ -24,17 +28,17 @@
 #' @export
 
 z_score <- function(xvals, mu = NULL, sigma = NULL,
-                    metric.type = 'mean',
+                    summary.type = 'mean',
                     mad.const = 1.4826){
 
   ### mean
-  if(is.null(mu) & metric.type == 'median'){
+  if(is.null(mu) & summary.type == 'median'){
     mu <- median(xvals)
   } else {
     mu <- mean(xvals)
   }
 
-  if(is.null(sigma) & metric.type == 'median'){
+  if(is.null(sigma) & summary.type == 'median'){
     sigma <- mad(x = xvals, constant = mad.const)
   } else {
     sigma <- sd(x = xvals)
