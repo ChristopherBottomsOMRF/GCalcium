@@ -3,7 +3,7 @@
 \docType{data}
 \name{GCaMP}
 \alias{GCaMP}
-\title{Pre-filtered GCaMP calcium activity waveforms}
+\title{Fitted GCaMP fluorescence waveform data}
 \format{A data frame with 11 rows and 814 columns
 \describe{
   \item{Time}{observed times of Trial.n values, in seconds}

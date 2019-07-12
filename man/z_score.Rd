@@ -4,7 +4,8 @@
 \alias{z_score}
 \title{Transform values into z scores}
 \usage{
-z_score(xvals, mu = NULL, sigma = NULL)
+z_score(xvals, mu = NULL, sigma = NULL, metric.type = "mean",
+  mad.const = 1.4826)
 }
 \arguments{
 \item{xvals}{vector of numbers}

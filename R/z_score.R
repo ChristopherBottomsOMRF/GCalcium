@@ -2,7 +2,7 @@
 #'
 #' @description `z_score` transforms input values to z scores. Allows user input of mu and sigma values for comparing distributions.
 #'
-#' @importFrom stats sd mad
+#' @importFrom stats sd mad median
 #' @param xvals vector of numbers
 #' @param mu the population mean
 #' @param sigma the population standard deviation
