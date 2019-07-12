@@ -4,7 +4,11 @@
 \alias{z_score}
 \title{Transform values into z scores}
 \usage{
+<<<<<<< HEAD
 z_score(xvals, mu = NULL, sigma = NULL, summary.type = "mean",
+=======
+z_score(xvals, mu = NULL, sigma = NULL, metric.type = "mean",
+>>>>>>> 9c5f9e9ad16eef4007a67587d64a4996bca3cdf6
   mad.const = 1.4826)
 }
 \arguments{
